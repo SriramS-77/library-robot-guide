@@ -1,0 +1,30 @@
+<launch>
+  <!-- Static map -->
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find my_nav)/maps/map.yaml"
+        output="screen"/>
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find my_nav)/params/costmap_common_params.yaml" command="load"
+              ns="global_costmap"/>
+    <rosparam file="$(find my_nav)/params/costmap_common_params.yaml" command="load"
+              ns="local_costmap"/>
+    <rosparam file="$(find my_nav)/params/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/dwa_local_planner_params.yaml" command="load"/>
+
+    <!-- explicitly set which plugins to use -->
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner"  value="dwa_local_planner/DWAPlannerROS"/>
+  </node>
+  
+  <!-- RViz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find my_nav)/rviz/nav.rviz"/>
+
+<!-- fake robot pose: map → base_link -->
+<node pkg="tf" type="static_transform_publisher" name="map_to_base"
+      args="6.56 3.55 0 0 0 0 map base_link 100"/>
+
+</launch>
+

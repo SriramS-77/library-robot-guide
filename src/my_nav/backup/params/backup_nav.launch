@@ -1,0 +1,20 @@
+<launch>
+  <!-- Map server -->
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find my_nav)/maps/map.yaml"/>
+
+  <!-- AMCL localization -->
+  <include file="$(find amcl)/examples/amcl_diff.launch"/>
+
+  <!-- Move_base with all costmaps and planner -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find my_nav)/params/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find my_nav)/params/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find my_nav)/params/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/dwa_local_planner_params.yaml" command="load"/>
+  </node>
+
+  <!-- Sensor converter node -->
+  <node pkg="my_nav" type="ultrasound_to_scan.py" name="ultra2scan" output="screen"/>
+</launch>

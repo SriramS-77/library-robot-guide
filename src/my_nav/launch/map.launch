@@ -1,0 +1,6 @@
+<launch>
+  <!-- Start map_server to publish your map -->
+  <node pkg="map_server" type="map_server" name="map_server"
+        output="screen"
+        args="$(find my_nav)/maps/map.yaml"/>
+</launch>

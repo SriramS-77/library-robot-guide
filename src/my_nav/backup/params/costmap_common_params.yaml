@@ -1,0 +1,15 @@
+# costmap_common_params.yaml
+obstacle_range: 2.5
+raytrace_range: 3.0
+
+# Robot footprint (rectangle centered at base_link)
+footprint: [[-0.3, -0.2], [-0.3, 0.2], [0.3, 0.2], [0.3, -0.2]]
+
+inflation_radius: 0.4
+
+observation_sources: ultrasound_front ultrasound_right ultrasound_back ultrasound_left
+
+ultrasound_front: {sensor_frame: front_ultra_link, data_type: LaserScan, topic: ultrasound_scan, marking: true, clearing: false}
+ultrasound_right: {sensor_frame: right_ultra_link, data_type: LaserScan, topic: ultrasound_scan, marking: true, clearing: false}
+ultrasound_back: {sensor_frame: back_ultra_link, data_type: LaserScan, topic: ultrasound_scan, marking: true, clearing: false}
+ultrasound_left: {sensor_frame: left_ultra_link, data_type: LaserScan, topic: ultrasound_scan, marking: true, clearing: false}
