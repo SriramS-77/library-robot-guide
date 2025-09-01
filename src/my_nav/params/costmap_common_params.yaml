@@ -5,7 +5,7 @@ raytrace_range: 3.0
 # Robot footprint (adjust to your robot size)
 footprint: [[-0.3, -0.3], [-0.3, 0.3], [0.3, 0.3], [0.3, -0.3]]
 
-inflation_radius: 0.4
+inflation_radius: 0.1  # 0.4
 
 # No sensors or lasers–disable marking/clearing
 # observation_sources:

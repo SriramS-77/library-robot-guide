@@ -1,20 +1,68 @@
 DWAPlannerROS:
-  max_vel_x: 0.3
-  min_vel_x: 0.0
+  # Robot type
+  holonomic_robot: false
+
+  max_vel_x: 1.0
+  min_vel_x: -1.0
+
+  max_vel_trans: 0.60
+  min_vel_trans: 0.30
+  trans_stopped_vel: 0.20  # below this, considered stopped (for goal/tolerance logic)
+
   max_vel_theta: 1.0
+  min_vel_theta: -1.0
   min_in_place_vel_theta: 0.5
+  min_vel_y: 0.0
+  max_vel_y: 0.0  # <--- Constrain y to 0 for differential drive
+
   acc_lim_x: 0.5
   acc_lim_theta: 1.0
 
-  xy_goal_tolerance: 0.1
-  yaw_goal_tolerance: 0.05
+  # ===== Sampling / simulation =====
+  vx_samples: 8
+  vtheta_samples: 24
+  sim_time: 2.5             # longer lookahead helps reduce oscillations in aisles
+  sim_granularity: 0.025
+  angular_sim_granularity: 0.025
+
+  # ===== Path/goal/obstacle costs =====
+  path_distance_bias: 40.0  # follow the global path tightly in narrow aisles
+  goal_distance_bias: 16.0  # don't over-fixate on the far goal
+  occdist_scale: 0.05       # obstacle cost weight (a bit higher than default for shelves)
+
+  # ===== Goal tolerances =====
+  xy_goal_tolerance: 0.10   # tight stop in front of shelf
+  yaw_goal_tolerance: 0.30  # doesn't need to be perfect if you only need to face the shelf roughly
   latch_xy_goal_tolerance: true
 
-  sim_time: 1.5
-  path_distance_bias: 32.0
-  goal_distance_bias: 24.0
-  occdist_scale: 0.01
-  
-  forward_point_distance: 0.325
+  # ===== Behavior niceties =====
+  forward_point_distance: 0.25
   stop_time_buffer: 0.2
-  escape_vel: -0.1
+  prune_plan: true
+  oscillation_reset_dist: 0.5
+
+  # ===== Escapes =====
+  escape_vel: -0.30         # if stuck, back up with at least dead-zone speed
+
+  # xy_goal_tolerance: 0.1
+  # yaw_goal_tolerance: 0.05
+  # latch_xy_goal_tolerance: true
+  # forward_point_distance: 0.3
+  # stop_time_buffer: 0.2
+
+  # sim_time: 1.5
+  # path_distance_bias: 32.0
+  # goal_distance_bias: 24.0
+  # occdist_scale: 0.01
+  
+  # forward_point_distance: 0.325
+  # stop_time_buffer: 0.2
+  # escape_vel: -0.1
+
+  # # Velocity samples
+  # vx_samples: 20
+  # vy_samples: 0    # <--- Set to 0 for differential drive
+  # vtheta_samples: 20
+
+  # # Other useful flags
+  # holonomic_robot: false   # <--- Must be false for differential drive

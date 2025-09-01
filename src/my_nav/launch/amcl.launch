@@ -1,0 +1,42 @@
+<launch>
+  <!-- Static map -->
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find my_nav)/maps/map.yaml"
+        output="screen"/>
+
+  <node pkg="my_nav" type="fake_localization.py" name="fake_localization" output="screen"/>
+
+  <node pkg="my_nav" type="differential_drive_node.py" name="diff_drive" output="screen"/>
+
+  <!-- Simple odometry publisher: publishes /odom and TF odom->base_link -->
+  <!-- <node pkg="my_nav" type="odometry_publisher.py" name="odometry_publisher" output="screen" /> -->
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find my_nav)/params/amcl_costmap_common_params.yaml" command="load"
+              ns="global_costmap"/>
+    <rosparam file="$(find my_nav)/params/amcl_costmap_common_params.yaml" command="load"
+              ns="local_costmap"/>
+    <rosparam file="$(find my_nav)/params/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find my_nav)/params/dwa_local_planner_params.yaml" command="load"/>
+
+    <!-- explicitly set which plugins to use -->
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner"  value="dwa_local_planner/DWAPlannerROS"/>
+  </node>
+
+  <!-- Sensor Nodes -->
+  <node pkg="my_nav" type="sonar.py" name="sonar_publisher" output="screen"/>
+  <node pkg="my_nav" type="sonar_to_scan.py" name="sonar_to_scan" output="screen"/>
+
+  <!-- <node pkg="my_nav" type="set_pose_and_get_path.py" name="set_pose_and_get_path" output="screen"/> -->
+  <!-- <node pkg="my_nav" type="simulate_odometry.py" name="simulate_odometry" output="screen"/> -->
+
+  <!-- AMCL for localization -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <rosparam file="$(find my_nav)/params/amcl_sonar.yaml" command="load"/>
+    <param name="use_map_topic" value="true"/>
+  </node>
+
+</launch>
