@@ -1,0 +1,31 @@
+Cloudcompare and gimp where used to get the pgm file from lidar scan of library.
+
+Make sure to install standalone rtabmap-databaseViewer, which come under usr/local/bin.
+
+sudo apt install librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-gl librealsense2-udev-rules
+sudo apt install ros-noetic-rtabmap ros-noetic-rtabmap-ros
+Install rtabmap and ros for rtabmap
+
+source /opt/ros/noetic/setup.bash
+source /opt/ros/noetic/setup.sh
+(Should be in ~/.bashrc)
+
+ssh kavya@100.102.154.78   // Change IP based on tailscale ip, kavya is rpi username, password is also kavya
+
+differential_drive_node.py contains full logic.
+Put encoder odometry data there
+
+Use amcl.launch to launch everything.
+(Tip: 
+Check what config and map files amcl.launch is using: those are latest ones, the rest are older.
+You should start working from there.)
+
+rostopic echo /cmd_vel
+rostopic echo /scan
+Check data at topics
+
+export ROS_IP=100.102.154.78
+export ROS_MASTER_URI=http://100.102.154.78:11311
+rviz
+These are environment variables and rviz to visualize robot, ultrasonic data and put destination.
+Under catkin_ws/src/my_nav/rviz, there is the config file for rviz visualization, just import that.
